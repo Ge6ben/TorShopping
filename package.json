@@ -8,6 +8,11 @@
     "preview": "vite preview",
     "lint": "eslint . --fix --ignore-path .gitignore"
   },
+  "engines": {
+    "node": ">=19.8.1",
+    "yarn": "kindly-use-npm",
+    "npm": ">=9.5.1"
+  },
   "dependencies": {
     "@mdi/font": "7.2.96",
     "core-js": "3.31.1",
