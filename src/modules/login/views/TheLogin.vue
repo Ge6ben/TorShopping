@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useField, useForm } from 'vee-validate'
 import * as yup from 'yup'
+import { login } from '@/modules/login/api/endpoints'
 
 const visible = ref(false)
 const schema = yup.object({
@@ -10,11 +11,15 @@ const schema = yup.object({
 })
 const { handleSubmit } = useForm({ validationSchema: schema })
 const onSubmit = handleSubmit(values => {
-	console.log('Submitted with', values)
+	loading.value = true
+	login('api/auth/login', values).finally(() => {
+		loading.value = false
+	})
 })
 
 const emailField = useField('email')
 const passwordField = useField('password')
+const loading = ref(false)
 </script>
 
 <template>
@@ -52,6 +57,7 @@ const passwordField = useField('password')
 
 				<!--    Submit button   -->
 				<v-btn
+					:loading="loading"
 					block
 					class="my-6"
 					color="primary"

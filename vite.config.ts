@@ -29,5 +29,12 @@ export default defineConfig({
 	},
 	server: {
 		port: 3000
+		// We can put proxy or baseURL
+		// proxy: {
+		// 	'^/api/.*': {
+		// 		target: 'https://tmaua.tornest.net:1337',
+		// 		changeOrigin: true
+		// 	}
+		// }
 	}
 })
