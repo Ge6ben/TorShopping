@@ -1,32 +1,35 @@
 # TorShopping
 
 ### Tasks :
+
 - Creating a simple dashboard and integrating those api based on those requirements.
-   - Creating Login page where each user can login his email and password 
-   - Create a section department (CRUD Operation)  create and edit and delete with
-            the view department based on user role and permissions.
-   - you need our collection api to above requirements:
-  <br/>
-       collection api :  https://documenter.getpostman.com/view/26825367/2s946e9stn
-  <br/>
-          baseURL: https://tmaua.tornest.net:1337/
-   - we have these users which each of one have a different permission and roles, you need                   allow only that actions can do which he has, and prevent that actions which he don't                    has permission
-        ````
-        User List : 
-        Manager Email : manager@tornet.co
-        Editor Email : editor@tornet.co
-        Viewer : viewer@tornet.co
-        password for all emails : password              
+
+  - Creating Login page where each user can login his email and password
+  - Create a section department (CRUD Operation) create and edit and delete with
+    the view department based on user role and permissions.
+  - you need our collection api to above requirements:
+    <br/>
+    collection api : https://documenter.getpostman.com/view/26825367/2s946e9stn
+    <br/>
+    baseURL: https://tmaua.tornest.net:1337/
+  - we have these users which each of one have a different permission and roles, you need allow only that actions can do which he has, and prevent that actions which he don't has permission
+    ```
+    User List :
+    Manager Email : manager@tornet.co
+    Editor Email : editor@tornet.co
+    Viewer : viewer@tornet.co
+    password for all emails : password
+    ```
 
 - convert Figma design to webApp
-please create a landing page based on this figma.
-https://www.figma.com/file/3UMtSt6Zdnm1UdaFYMMOk1/Shopping-Website-(Community)?type=design&node-id=2%3A221&mode=design&t=mvDECHgQcNYQ9MgL-1
+  please create a landing page based on this figma.
+  https://www.figma.com/file/3UMtSt6Zdnm1UdaFYMMOk1/Shopping-Website-(Community)?type=design&node-id=2%3A221&mode=design&t=mvDECHgQcNYQ9MgL-1
 
 #### Requirements :
+
 - Using Vue js for creating dashboard and landing page.
 - using (state management (Vuex or Pinia)) if needed.
 - best practice coding and reusing code
-
 
 ## Project setup
 
@@ -64,8 +67,6 @@ npm run lint
 ### Customize configuration
 
 See [Configuration Reference](https://vitejs.dev/config/).
-
-
 
 ## Engine Locking
 
@@ -107,4 +108,3 @@ Note that the use of `engine-strict` didn't specifically say anything about `npm
 "npm": ">=9.5.1"
 },
 ```
-
