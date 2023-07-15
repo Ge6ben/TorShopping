@@ -3,6 +3,9 @@ import { ref } from 'vue'
 import { useField, useForm } from 'vee-validate'
 import * as yup from 'yup'
 import { login } from '@/modules/login/api/endpoints'
+import { useNotification } from '@/composables/Notification'
+
+const { show: showSnackbar } = useNotification()
 
 const visible = ref(false)
 const schema = yup.object({
@@ -12,9 +15,16 @@ const schema = yup.object({
 const { handleSubmit } = useForm({ validationSchema: schema })
 const onSubmit = handleSubmit(values => {
 	loading.value = true
-	login('api/auth/login', values).finally(() => {
-		loading.value = false
-	})
+
+	login('api/auth/login', values)
+		.catch(() => {
+			// TODO: Show backend error msg
+			// TODO:Connect backend validation to front end when have 422 (Field errors)
+			showSnackbar('An error occurred', 'error')
+		})
+		.finally(() => {
+			loading.value = false
+		})
 })
 
 const emailField = useField('email')
