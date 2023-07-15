@@ -1,51 +1,69 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { useField, useForm } from 'vee-validate'
+import * as yup from 'yup'
 
 const visible = ref(false)
+const schema = yup.object({
+	email: yup.string().email().required().label('E-mail'),
+	password: yup.string().min(8).required()
+})
+const { handleSubmit } = useForm({ validationSchema: schema })
+const onSubmit = handleSubmit(values => {
+	console.log('Submitted with', values)
+})
+
+const emailField = useField('email')
+const passwordField = useField('password')
 </script>
 
 <template>
-	<v-container class="mt-8 align-center" fill-height fluid="true">
-		<v-card
-			class="mx-auto pa-12 pb-8 align-center"
-			elevation="8"
-			max-width="448"
-			rounded="lg"
-		>
-			<v-img
-				class="mx-auto my-6"
-				max-width="300"
-				src="/src/assets/logo.png"
-			></v-img>
+	<v-container class="mt-8">
+		<v-card class="mx-auto pa-12" elevation="8" max-width="448" rounded="lg">
+			<!--      Logo     -->
+			<v-img class="ma-12" max-width="350" src="/src/assets/logo.png" />
 
-			<div class="text-subtitle-1 text-medium-emphasis">Email</div>
+			<form @submit="onSubmit">
+				<!--    Email Field   -->
+				<v-text-field
+					v-model="emailField.value.value"
+					:error-messages="emailField.errorMessage.value"
+					class="mb-2"
+					density="compact"
+					label="Email *"
+					placeholder="Email address"
+					prepend-inner-icon="mdi-email-outline"
+					type="email"
+					variant="outlined"
+				/>
 
-			<v-text-field
-				density="compact"
-				placeholder="Email address"
-				prepend-inner-icon="mdi-email-outline"
-				variant="outlined"
-			></v-text-field>
+				<!--    Password Field   -->
+				<v-text-field
+					v-model="passwordField.value.value"
+					:error-messages="passwordField.errorMessage.value"
+					:type="visible ? 'text' : 'password'"
+					density="compact"
+					label="Name"
+					placeholder="Enter your password"
+					prepend-inner-icon="mdi-lock-outline"
+					variant="outlined"
+					@click:append-inner="visible = !visible"
+				/>
 
-			<div
-				class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between"
-			>
-				Password
-			</div>
+				<!--    Submit button   -->
+				<v-btn
+					block
+					class="my-6"
+					color="primary"
+					size="large"
+					type="submit"
+					variant="tonal"
+				>
+					Log In
+				</v-btn>
+			</form>
 
-			<v-text-field
-				:append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
-				:type="visible ? 'text' : 'password'"
-				density="compact"
-				placeholder="Enter your password"
-				prepend-inner-icon="mdi-lock-outline"
-				variant="outlined"
-				@click:append-inner="visible = !visible"
-			></v-text-field>
-
-			<v-btn block class="mb-8" color="blue" size="large" variant="tonal">
-				Log In
-			</v-btn>
+			<div class="text-caption">* Required</div>
 		</v-card>
 	</v-container>
 </template>
