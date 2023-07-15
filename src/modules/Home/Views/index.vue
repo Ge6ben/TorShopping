@@ -5,6 +5,7 @@ const homeOpts = [
 		title: 'Landing Page',
 		icon: 'mdi-file-document-plus',
 		path: '/landing-page',
+		// FIXME: Handle permissionCond
 		permissionCode: ''
 	},
 	{
@@ -19,9 +20,11 @@ const homeOpts = [
 
 <template>
 	<v-row class="text-center" no-gutters>
-		<v-col cols="12"><img alt="" src="@/assets/logo.png" /></v-col>
+		<v-col class="mt-12" cols="12"
+			><img alt="" src="@/assets/logo.png"
+		/></v-col>
 		<v-col cols="12">
-			<h1 class="text-h4 my-12">Welcome to ToeShopping</h1>
+			<h1 class="text-h4 my-12">Welcome to TorShopping</h1>
 		</v-col>
 		<v-col cols="12">
 			<v-item-group>

@@ -1,10 +1,15 @@
 <template>
-	<h1>Admin</h1>
-	<BaseHeader></BaseHeader>
+	<BaseHeader v-if="!currentRouteMeta.hidePageHeader" />
+
 	<slot />
 </template>
 
 <script lang="ts" setup>
-//
-import BaseHeader from '@/components/BaseHeader.vue'
+import { useRouteInfo } from '@/composables/currentRouterInfo'
+import { defineAsyncComponent } from 'vue'
+
+const BaseHeader = defineAsyncComponent(
+	() => import('../../components/BaseHeader.vue')
+)
+const { currentRouteMeta } = useRouteInfo()
 </script>

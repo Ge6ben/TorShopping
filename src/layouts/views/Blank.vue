@@ -1,6 +1,7 @@
 <template>
-	<h1>Blank</h1>
-	<slot />
+	<div class="bg-primary fill-height">
+		<slot />
+	</div>
 </template>
 
 <script lang="ts" setup>

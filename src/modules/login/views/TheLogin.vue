@@ -1,6 +1,11 @@
 <template>
-	<v-container class="mt-8">
-		<v-card class="mx-auto pa-12" elevation="8" max-width="448" rounded="lg">
+	<v-container>
+		<v-card
+			class="mx-auto pa-12 mt-12"
+			elevation="8"
+			max-width="448"
+			rounded="lg"
+		>
 			<!--      Logo     -->
 			<v-img class="ma-12" max-width="350" src="/src/assets/logo.png" />
 

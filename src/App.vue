@@ -16,3 +16,8 @@
 import Notification from '@/components/Notification.vue'
 import { layoutTypeToComponentMapper } from '@/layouts/types/types'
 </script>
+<style>
+* {
+	overflow-y: hidden !important;
+}
+</style>
