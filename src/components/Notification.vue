@@ -1,9 +1,3 @@
-<script lang="ts" setup>
-import { useNotification } from '@/composables/Notification'
-
-const { notification } = useNotification()
-</script>
-
 <template>
 	<v-snackbar
 		v-model="notification.open"
@@ -15,3 +9,9 @@ const { notification } = useNotification()
 		{{ notification.message }}
 	</v-snackbar>
 </template>
+
+<script lang="ts" setup>
+import { useNotification } from '@/composables/Notification'
+
+const { notification } = useNotification()
+</script>

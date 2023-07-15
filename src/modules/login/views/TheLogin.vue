@@ -1,37 +1,3 @@
-<script lang="ts" setup>
-import { ref } from 'vue'
-import { useField, useForm } from 'vee-validate'
-import * as yup from 'yup'
-import { login } from '@/modules/login/api/endpoints'
-import { useNotification } from '@/composables/Notification'
-
-const { show: showSnackbar } = useNotification()
-
-const visible = ref(false)
-const schema = yup.object({
-	email: yup.string().email().required().label('E-mail'),
-	password: yup.string().min(8).required()
-})
-const { handleSubmit } = useForm({ validationSchema: schema })
-const onSubmit = handleSubmit(values => {
-	loading.value = true
-
-	login('api/auth/login', values)
-		.catch(() => {
-			// TODO: Show backend error msg
-			// TODO:Connect backend validation to front end when have 422 (Field errors)
-			showSnackbar('An error occurred', 'error')
-		})
-		.finally(() => {
-			loading.value = false
-		})
-})
-
-const emailField = useField('email')
-const passwordField = useField('password')
-const loading = ref(false)
-</script>
-
 <template>
 	<v-container class="mt-8">
 		<v-card class="mx-auto pa-12" elevation="8" max-width="448" rounded="lg">
@@ -70,7 +36,7 @@ const loading = ref(false)
 					:loading="loading"
 					block
 					class="my-6"
-					color="primary"
+					color="black"
 					size="large"
 					type="submit"
 					variant="tonal"
@@ -83,3 +49,41 @@ const loading = ref(false)
 		</v-card>
 	</v-container>
 </template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+import { useField, useForm } from 'vee-validate'
+import * as yup from 'yup'
+import { login } from '@/modules/login/api/endpoints'
+import { useNotification } from '@/composables/Notification'
+import router from '@/router'
+
+const { show: showSnackbar } = useNotification()
+
+const visible = ref(false)
+const schema = yup.object({
+	email: yup.string().email().required().label('E-mail'),
+	password: yup.string().min(8).required()
+})
+const { handleSubmit } = useForm({ validationSchema: schema })
+const onSubmit = handleSubmit(values => {
+	loading.value = true
+
+	login('api/auth/login', values)
+		.then(res => {
+			router.push('/')
+		})
+		.catch(() => {
+			// TODO: Show backend error msg
+			// TODO:Connect backend validation to front end when have 422 (Field errors)
+			showSnackbar('An error occurred', 'error')
+		})
+		.finally(() => {
+			loading.value = false
+		})
+})
+
+const emailField = useField('email')
+const passwordField = useField('password')
+const loading = ref(false)
+</script>

@@ -1,4 +1,5 @@
 import { type RouteRecordRaw as Route } from 'vue-router'
+import { Layout } from '@/layouts/types/types'
 
 export const loginRoutes: Route[] = [
 	{
@@ -7,6 +8,7 @@ export const loginRoutes: Route[] = [
 		component: () =>
 			import(/* webpackChunkName: "TheLoginChunk" */ '../views/TheLogin.vue'),
 		meta: {
+			layout: Layout.BLANK,
 			title: 'Login'
 		}
 	}
