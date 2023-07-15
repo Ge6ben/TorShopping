@@ -11,7 +11,8 @@ const homeRoutes: Route[] = [
 		meta: {
 			layout: Layout.ADMIN,
 			title: 'Home',
-			hidePageHeader: true
+			hidePageHeader: true,
+			hideNavigation: true
 		}
 	}
 ]

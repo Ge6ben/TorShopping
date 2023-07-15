@@ -1,21 +1,7 @@
 <script lang="ts" setup>
-const homeOpts = [
-	{
-		id: 1,
-		title: 'Landing Page',
-		icon: 'mdi-file-document-plus',
-		path: '/landing-page',
-		// FIXME: Handle permissionCond
-		permissionCode: ''
-	},
-	{
-		id: 2,
-		title: 'Admin Dashboard',
-		icon: 'mdi-file-document-plus',
-		path: '/departments',
-		permissionCode: ''
-	}
-]
+import { useNavigationItems } from '@/stores/navigationStore'
+
+const { getCurrentNavigation } = useNavigationItems()
 </script>
 
 <template>
@@ -30,11 +16,16 @@ const homeOpts = [
 			<v-item-group>
 				<v-container>
 					<v-row class="justify-center">
-						<v-col v-for="item in homeOpts" :key="item.id" cols="12" md="4">
+						<v-col
+							v-for="item in getCurrentNavigation"
+							:key="item.id"
+							cols="12"
+							md="4"
+						>
 							<v-card
+								:to="item.path"
 								class="pa-4 elevation-3 rounded"
 								height="200"
-								@click="() => {}"
 							>
 								<div
 									class="bg-primary rounded-circle pa-6 ma-auto my-2"
