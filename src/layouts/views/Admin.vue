@@ -9,10 +9,13 @@
 	>
 		<template v-slot:prepend>
 			<v-list-item
+				:prepend-avatar="
+					getSelf?.user?.image ||
+					'https://semantic-ui.com/images/avatar2/small/kristy.png'
+				"
+				:subtitle="getSelf?.user?.email || ''"
+				:title="getSelf?.user?.fullname || ''"
 				lines="two"
-				prepend-avatar="https://semantic-ui.com/images/avatar2/small/kristy.png"
-				subtitle="Logged in"
-				title="Jane Smith"
 				@click="$router.push('/')"
 			/>
 		</template>
@@ -61,10 +64,13 @@ import { defineAsyncComponent, ref } from 'vue'
 import { useNavigationItems } from '@/stores/navigationStore'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseDialog from '@/components/BaseDialog.vue'
-
 import AxiosInstance from '@/plugins/axios'
 import router from '@/router'
 import { useNotification } from '@/composables/Notification'
+import { authStore } from '@/stores/authStore'
+
+const mySelfStore = authStore()
+const { getSelf, updateSelf } = mySelfStore
 
 const { show: showSnackbar } = useNotification()
 

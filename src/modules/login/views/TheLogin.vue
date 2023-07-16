@@ -37,7 +37,7 @@
 				/>
 
 				<!--    Submit button   -->
-				<v-btn
+				<BaseButton
 					:loading="loading"
 					block
 					class="my-6"
@@ -45,9 +45,8 @@
 					size="large"
 					type="submit"
 					variant="tonal"
-				>
-					Log In
-				</v-btn>
+					>Log In
+				</BaseButton>
 			</form>
 
 			<div class="text-caption">* Required</div>
@@ -62,6 +61,9 @@ import * as yup from 'yup'
 import { login } from '@/modules/login/api/endpoints'
 import { useNotification } from '@/composables/Notification'
 import router from '@/router'
+import BaseButton from '@/components/BaseButton.vue'
+import { authStore } from '@/stores/authStore'
+import { ILoginResponse } from '@/modules/login/types/types'
 
 const { show: showSnackbar } = useNotification()
 
@@ -70,12 +72,23 @@ const schema = yup.object({
 	email: yup.string().email().required().label('E-mail'),
 	password: yup.string().min(8).required()
 })
-const { handleSubmit } = useForm({ validationSchema: schema })
+const { handleSubmit } = useForm({
+	validationSchema: schema,
+	initialValues: {
+		email: 'manager@tornet.co',
+		password: 'password'
+	}
+})
+
+const mySelfStore = authStore()
+const { updateSelf } = mySelfStore
+
 const onSubmit = handleSubmit(values => {
 	loading.value = true
 
 	login('api/auth/login', values)
-		.then(res => {
+		.then((res: ILoginResponse) => {
+			updateSelf(res)
 			router.push('/')
 		})
 		.catch(() => {
