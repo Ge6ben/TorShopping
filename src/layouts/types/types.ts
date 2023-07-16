@@ -8,7 +8,7 @@ export const layoutTypeToComponentMapper: Record<string, string> = {
 	Blank: 'blank'
 }
 
-export interface navigationList {
+export interface INavigationList {
 	id: Id
 	title: string
 	icon: string
