@@ -16,7 +16,7 @@ const { getSelf, getSelfToken } = mySelfStore
 const { show: showSnackbar } = useNotification()
 
 const BaseHeader = defineAsyncComponent(
-	() => import('../../components/BaseHeader.vue')
+	() => import('@/components/BaseHeader.vue')
 )
 const { currentRouteMeta } = useRouteInfo()
 
@@ -65,8 +65,8 @@ function handleLogout() {
 	<!--  Side Bar   -->
 	<v-navigation-drawer
 		v-if="!currentRouteMeta.hideNavigation"
+		expand-on-hover
 		permanent
-		width="150px"
 	>
 		<template v-slot:prepend>
 			<v-list-item

@@ -7,7 +7,7 @@ const homeRoutes: Route[] = [
 	{
 		path: '/',
 		name: 'Home',
-		component: () => import('../Views/index.vue'),
+		component: () => import('@/modules/Home/Views/index.vue'),
 		meta: {
 			layout: Layout.ADMIN,
 			title: 'Home',

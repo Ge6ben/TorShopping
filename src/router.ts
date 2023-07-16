@@ -29,4 +29,7 @@ const router: Router = createRouter({
 	routes
 })
 
+// FIXME:handle authentication before change to any route
+// FIXME:Show offline page when user disconnect
+
 export default router

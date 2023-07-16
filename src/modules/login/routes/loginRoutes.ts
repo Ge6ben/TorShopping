@@ -6,7 +6,9 @@ export const loginRoutes: Route[] = [
 		path: '/login',
 		name: 'login',
 		component: () =>
-			import(/* webpackChunkName: "TheLoginChunk" */ '../views/TheLogin.vue'),
+			import(
+				/* webpackChunkName: "TheLoginChunk" */ '@/modules/login/views/TheLogin.vue'
+			),
 		meta: {
 			layout: Layout.BLANK,
 			title: 'Login',

@@ -7,7 +7,7 @@ export const departmentRoutes: Route[] = [
 		name: 'departments',
 		component: () =>
 			import(
-				/* webpackChunkName: "DepartmentsChunk" */ '../views/Departments.vue'
+				/* webpackChunkName: "DepartmentsChunk" */ '@/modules/departments/views/Departments.vue'
 			),
 		meta: {
 			layout: Layout.ADMIN,

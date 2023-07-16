@@ -7,7 +7,7 @@ export const landingPageRoutes: Route[] = [
 		name: 'landingPage',
 		component: () =>
 			import(
-				/* webpackChunkName: "LandingPageChunk" */ '../views/LandingPage.vue'
+				/* webpackChunkName: "LandingPageChunk" */ '@/modules/landingPage/views/LandingPage.vue'
 			),
 		meta: {
 			layout: Layout.BLANK,
