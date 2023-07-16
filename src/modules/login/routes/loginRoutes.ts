@@ -9,7 +9,8 @@ export const loginRoutes: Route[] = [
 			import(/* webpackChunkName: "TheLoginChunk" */ '../views/TheLogin.vue'),
 		meta: {
 			layout: Layout.BLANK,
-			title: 'Login'
+			title: 'Login',
+			class: 'bg-primary fill-height'
 		}
 	}
 ]
