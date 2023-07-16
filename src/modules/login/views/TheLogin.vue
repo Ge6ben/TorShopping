@@ -64,6 +64,7 @@ import router from '@/router'
 import BaseButton from '@/components/BaseButton.vue'
 import { authStore } from '@/stores/authStore'
 import { ILoginResponse } from '@/modules/login/types/types'
+import { NavigationStore } from '@/stores/navigationStore'
 
 const { show: showSnackbar } = useNotification()
 
@@ -82,6 +83,8 @@ const { handleSubmit } = useForm({
 
 const mySelfStore = authStore()
 const { updateSelf } = mySelfStore
+const navigationStore = NavigationStore()
+const { getNavigationList } = navigationStore
 
 const onSubmit = handleSubmit(values => {
 	loading.value = true
@@ -89,6 +92,7 @@ const onSubmit = handleSubmit(values => {
 	login('api/auth/login', values)
 		.then((res: ILoginResponse) => {
 			updateSelf(res)
+			getNavigationList()
 			router.push('/')
 		})
 		.catch(() => {

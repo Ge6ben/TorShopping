@@ -1,17 +1,11 @@
 <script lang="ts" setup>
-import { computed, onMounted } from 'vue'
+import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { NavigationStore } from '@/stores/navigationStore'
 import { INavigationList } from '@/layouts/types/types'
 
-const navigationStore = NavigationStore()
-const { getNavigationList } = navigationStore
-
 const store = NavigationStore()
 const { navigationItems } = storeToRefs(store)
-onMounted(() => {
-	getNavigationList()
-})
 
 const pages = computed((): INavigationList[] => {
 	return navigationItems.value

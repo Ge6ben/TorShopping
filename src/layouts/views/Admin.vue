@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useRouteInfo } from '@/composables/currentRouterInfo'
-import { defineAsyncComponent, onMounted, ref } from 'vue'
+import { defineAsyncComponent, ref } from 'vue'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseDialog from '@/components/BaseDialog.vue'
 import AxiosInstance from '@/plugins/axios'
@@ -22,14 +22,9 @@ const { currentRouteMeta } = useRouteInfo()
 
 const loading = ref(false)
 const canOpenDialog = ref(false)
-const navigationStore = NavigationStore()
-const { getNavigationList } = navigationStore
 
 const store = NavigationStore()
 const { navigationItems } = storeToRefs(store)
-onMounted(() => {
-	getNavigationList()
-})
 
 /**
  * The Logout allows users to securely log out of the application
