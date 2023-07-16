@@ -1,12 +1,17 @@
 <template>
 	<BaseHeader v-if="!currentRouteMeta.hidePageHeader" />
-	<v-navigation-drawer v-if="!currentRouteMeta.hideNavigation" permanent>
+	<v-navigation-drawer
+		v-if="!currentRouteMeta.hideNavigation"
+		permanent
+		width="150px"
+	>
 		<template v-slot:prepend>
 			<v-list-item
 				lines="two"
 				prepend-avatar="https://semantic-ui.com/images/avatar2/small/kristy.png"
 				subtitle="Logged in"
 				title="Jane Smith"
+				@click="$router.push('/')"
 			/>
 		</template>
 		<v-divider />

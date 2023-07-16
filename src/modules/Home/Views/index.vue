@@ -6,9 +6,6 @@ const { getCurrentNavigation } = useNavigationItems()
 
 <template>
 	<v-row class="text-center" no-gutters>
-		<v-col class="mt-12" cols="12"
-			><img alt="" src="@/assets/logo.png"
-		/></v-col>
 		<v-col cols="12">
 			<h1 class="text-h4 my-12">Welcome to TorShopping</h1>
 		</v-col>
