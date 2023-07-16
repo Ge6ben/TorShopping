@@ -19,6 +19,7 @@
     "@vee-validate/rules": "^4.10.6",
     "axios": "^1.4.0",
     "core-js": "3.31.1",
+    "pinia": "^2.1.4",
     "roboto-fontface": "*",
     "vee-validate": "^4.10.6",
     "vue": "3.3.4",
