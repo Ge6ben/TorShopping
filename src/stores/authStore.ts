@@ -4,11 +4,12 @@ import { ILoginResponse } from '@/modules/login/types/types'
 
 export const authStore = defineStore('authStore', () => {
 	const getSelf = ref<ILoginResponse>()
+	const getSelfToken = ref<string>()
 
 	function updateSelf(newSelf: ILoginResponse) {
 		getSelf.value = newSelf
-		console.log(newSelf, getSelf.value)
+		getSelfToken.value = newSelf.access_token
 	}
 
-	return { getSelf, updateSelf }
+	return { getSelf, updateSelf, getSelfToken }
 })

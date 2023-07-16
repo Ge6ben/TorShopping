@@ -70,7 +70,7 @@ import { useNotification } from '@/composables/Notification'
 import { authStore } from '@/stores/authStore'
 
 const mySelfStore = authStore()
-const { getSelf, updateSelf } = mySelfStore
+const { getSelf, getSelfToken } = mySelfStore
 
 const { show: showSnackbar } = useNotification()
 
@@ -93,7 +93,7 @@ function handleLogout() {
 		{},
 		{
 			headers: {
-				Authorization: 'Bearer 233|2gIxNsm3m89x00J2J64mCeCaTIu629XC06SA4dJz'
+				Authorization: `Bearer ${getSelfToken}`
 			}
 		}
 	)
