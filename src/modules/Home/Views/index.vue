@@ -1,7 +1,21 @@
 <script lang="ts" setup>
-import { useNavigationItems } from '@/stores/navigationStore'
+import { computed, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
+import { NavigationStore } from '@/stores/navigationStore'
+import { INavigationList } from '@/layouts/types/types'
 
-const { getCurrentNavigation } = useNavigationItems()
+const navigationStore = NavigationStore()
+const { getNavigationList } = navigationStore
+
+const store = NavigationStore()
+const { navigationItems } = storeToRefs(store)
+onMounted(() => {
+	getNavigationList()
+})
+
+const pages = computed((): INavigationList[] => {
+	return navigationItems.value
+})
 </script>
 
 <template>
@@ -13,12 +27,7 @@ const { getCurrentNavigation } = useNavigationItems()
 			<v-item-group>
 				<v-container>
 					<v-row class="justify-center">
-						<v-col
-							v-for="item in getCurrentNavigation"
-							:key="item.id"
-							cols="12"
-							md="4"
-						>
+						<v-col v-for="item in pages" :key="item.id" cols="12" md="4">
 							<v-card
 								:to="item.path"
 								class="pa-4 elevation-3 rounded"
