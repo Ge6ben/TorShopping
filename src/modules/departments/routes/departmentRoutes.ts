@@ -13,6 +13,18 @@ export const departmentRoutes: Route[] = [
 			layout: Layout.ADMIN,
 			title: 'Departments'
 		}
+	},
+	{
+		path: '/departments/:action/:id?',
+		name: 'department-record',
+		component: () =>
+			import(
+				/* webpackChunkName: "DepartmentsRecordsChunk" */ '@/modules/departments/views/ViewAndUpsertRecord.vue'
+			),
+		meta: {
+			layout: Layout.ADMIN,
+			title: 'Department Record'
+		}
 	}
 ]
 

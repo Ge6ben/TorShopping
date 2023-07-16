@@ -1,3 +1,5 @@
+import { RouteLocation } from 'vue-router'
+
 /**
  * vuetify data table header
  * */
@@ -71,4 +73,10 @@ export interface IDataTableListResponse {
 		to: number
 		total: number
 	}
+}
+
+export interface IBreadcrumb {
+	title: string
+	disabled: boolean
+	to: RouteLocation
 }

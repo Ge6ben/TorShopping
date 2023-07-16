@@ -9,6 +9,7 @@ import {
 } from '@/modules/departments/types/types'
 import { dataTable } from '@/modules/departments/api/endpoints'
 import BaseButton from '@/components/BaseButton.vue'
+import router from '@/router'
 
 const tableItemPerPage: Ref<number> = ref(3)
 const headers: DataTableHeaderOpt<IDepartment> = [
@@ -70,12 +71,21 @@ function fetchData(event: AnyObject) {
 		})
 		.finally(() => (loading.value = false))
 }
+
+function handleActions() {
+	router.push({
+		name: 'department-record',
+		params: {
+			action: 'add'
+		}
+	})
+}
 </script>
 <template>
 	<v-container>
 		<v-row no-gutters>
 			<v-col class="my-8 text-end" cols="12">
-				<BaseButton>Add</BaseButton>
+				<BaseButton @click="handleActions">Add</BaseButton>
 			</v-col>
 			<v-col>
 				<v-data-table-server
@@ -85,14 +95,15 @@ function fetchData(event: AnyObject) {
 					:items-length="tableCount"
 					:items-per-page-options="itemsPerPageOptions ?? []"
 					:loading="loading"
-					class="elevation-1"
+					class="elevation-1 text-no-wrap"
+					fixed-header
 					height="400px"
 					@update:options="fetchData($event)"
 				>
 					<template v-slot:bottom>
 						<v-row>
 							<v-col cols="10"></v-col>
-							<v-col class="pb-0" cols="2">
+							<v-col class="pb-0 mt-4" cols="2">
 								<v-autocomplete
 									:items="itemsPerPageOptions"
 									:model-value="tableItemPerPage"
@@ -104,6 +115,7 @@ function fetchData(event: AnyObject) {
 									variant="solo"
 									@update:model-value="fetchData({ itemsPerPage: $event })"
 								/>
+								<!-- TODO:Show total number-->
 							</v-col>
 						</v-row>
 					</template>

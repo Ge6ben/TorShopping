@@ -1,7 +1,10 @@
 import AxiosInstance from '@/plugins/axios'
 import { useNotification } from '@/composables/Notification'
 import { authStore } from '@/stores/authStore'
-import { IDataTableListResponse } from '@/modules/departments/types/types'
+import {
+	IDataTableListResponse,
+	IDepartment
+} from '@/modules/departments/types/types'
 
 const mySelfStore = authStore()
 const { getSelfToken } = mySelfStore
@@ -28,5 +31,23 @@ export function dataTable(perPage: number): Promise<IDataTableListResponse> {
 				showSnackbar('An error occurred', 'error')
 				reject(error.response.data)
 			})
+	})
+}
+
+/**
+ * Create a new record in the backend via post method
+ * @param data Post body data.
+ */
+export function createDepartment(data = {}): Promise<IDepartment> {
+	const url = '/api/department'
+	const formData = new FormData()
+	Object.entries(data).forEach(([key, value]) => {
+		formData.append(key, value as string)
+	})
+
+	return AxiosInstance.post(url, formData, {
+		headers: {
+			Authorization: `Bearer ${getSelfToken}`
+		}
 	})
 }
