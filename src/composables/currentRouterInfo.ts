@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { RouteMeta, useRouter } from 'vue-router'
 
 export const useRouteInfo = () => {
+	// FIXME: this line cause a warning `inject() can only be used inside setup() `
 	const router = useRouter()
 
 	const currentRouteMeta = computed(() => router.currentRoute.value.meta)

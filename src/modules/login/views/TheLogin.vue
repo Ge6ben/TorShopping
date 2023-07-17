@@ -29,7 +29,7 @@
 					:error-messages="passwordField.errorMessage.value"
 					:type="visible ? 'text' : 'password'"
 					density="compact"
-					label="Name"
+					label="Password *"
 					placeholder="Enter your password"
 					prepend-inner-icon="mdi-lock-outline"
 					variant="outlined"
@@ -76,8 +76,10 @@ const schema = yup.object({
 const { handleSubmit } = useForm({
 	validationSchema: schema,
 	initialValues: {
-		email: 'manager@tornet.co',
-		password: 'password'
+		// TODO: use NODE-ENV-FILE package to save these critical information
+		// Just show in development environment
+		email: process.env.NODE_ENV === 'production' ? '' : 'manager@tornet.co',
+		password: process.env.NODE_ENV === 'production' ? '' : 'password'
 	}
 })
 

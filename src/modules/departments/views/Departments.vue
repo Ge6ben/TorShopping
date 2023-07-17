@@ -158,11 +158,11 @@ function hasPermissionToSeeBtn(permCode: string) {
 					@update:options="fetchData($event)"
 				>
 					<template v-slot:bottom>
-						<v-row>
-							<v-col class="d-flex align-center pb-0" cols="10">
+						<v-row class="justify-space-between">
+							<v-col class="d-flex align-center pb-0" cols="9">
 								<span class="px-4 text-caption">Total: {{ tableCount }}</span>
 							</v-col>
-							<v-col class="pb-0 mt-4" cols="2">
+							<v-col class="pb-0 ma-4" cols="2">
 								<v-autocomplete
 									:items="itemsPerPageOptions"
 									:model-value="tableItemPerPage"
