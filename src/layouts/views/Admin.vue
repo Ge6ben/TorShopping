@@ -66,8 +66,8 @@ function handleLogout() {
 		<template v-slot:prepend>
 			<v-list-item
 				:prepend-avatar="
-					getSelf?.user?.image ||
-					'https://semantic-ui.com/images/avatar2/small/kristy.png'
+					(getSelf?.user?.image ||
+						'https://semantic-ui.com/images/avatar2/small/kristy.png') as string
 				"
 				:subtitle="getSelf?.user?.email || ''"
 				:title="getSelf?.user?.fullname || ''"

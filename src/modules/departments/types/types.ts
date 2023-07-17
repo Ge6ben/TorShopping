@@ -1,28 +1,3 @@
-import { RouteLocation } from 'vue-router'
-
-/**
- * vuetify data table header
- * */
-export type DataTableHeaderOpt<T> = {
-	key: keyof T
-	title: string
-	value: keyof T | string | ((item: T) => unknown)
-
-	colspan?: number
-	rowspan?: number
-
-	fixed?: boolean
-	align?: 'start' | 'end' | 'center'
-
-	width?: number | string
-	minWidth?: string
-	maxWidth?: string
-
-	sortable?: boolean
-	sort?: unknown
-	sortKey?: keyof T
-}
-
 /**
  * ts type for dynamic objects which is key is a string and value is unknown
  */
@@ -58,6 +33,8 @@ export interface IDepartment {
 		email: string
 		phone: string
 	}[]
+	// Front end keys
+	actions?: Actions
 }
 
 export interface IDataTableLink {
@@ -86,8 +63,19 @@ export interface IDataTableListResponse {
 	}
 }
 
+export interface IDepartmentRecordResponse {
+	data: IDepartment
+}
+
 export interface IBreadcrumb {
 	title: string
 	disabled: boolean
-	to: RouteLocation
+	to: string
+}
+
+export enum Actions {
+	View = 'View',
+	Delete = 'Delete',
+	Add = 'Add',
+	Edit = 'Edit'
 }

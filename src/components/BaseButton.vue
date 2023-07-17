@@ -4,10 +4,10 @@ import { ButtonVariant } from '@/shared/types/types'
 export type RButtonProps = {
 	/** Color of the button */
 	color?: string
-
 	/** To disable the button */
 	disabled?: boolean
-
+	/** To loading the button */
+	loading?: boolean
 	/** Variant of the button */
 	variant?: ButtonVariant
 }

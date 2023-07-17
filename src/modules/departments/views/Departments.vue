@@ -159,7 +159,6 @@ function openDeleteDialog(id: number) {
 									label="Items per page"
 									@update:model-value="fetchData({ itemsPerPage: $event })"
 								/>
-								<!-- TODO:Show total number-->
 							</v-col>
 						</v-row>
 					</template>

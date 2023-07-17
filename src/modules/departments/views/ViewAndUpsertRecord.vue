@@ -4,13 +4,17 @@ import { computed, onMounted, ref } from 'vue'
 import * as yup from 'yup'
 import BaseButton from '@/components/BaseButton.vue'
 import {
-	Actions,
 	getDepartment,
 	upsertDepartment
 } from '@/modules/departments/api/endpoints'
 import router from '@/router'
 import { useNotification } from '@/composables/Notification'
-import { IBreadcrumb, IDepartment } from '@/modules/departments/types/types'
+import {
+	Actions,
+	IBreadcrumb,
+	IDepartment,
+	IDepartmentRecordResponse
+} from '@/modules/departments/types/types'
 
 const { show: showSnackbar } = useNotification()
 const data = ref<IDepartment>()
@@ -25,6 +29,7 @@ const items: IBreadcrumb[] = [
 		disabled: false,
 		to: '/departments'
 	},
+
 	{
 		title: `${getTitle.value} department`,
 		disabled: true,
@@ -71,7 +76,7 @@ onMounted(() => {
 	if (isInEditMode.value || isInViewMode.value) {
 		fieldsLoading.value = true
 		getDepartment(getId.value)
-			.then((res: { data: IDepartment }) => {
+			.then((res: IDepartmentRecordResponse) => {
 				data.value = res.data
 			})
 			.finally(() => {

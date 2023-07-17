@@ -3,7 +3,8 @@ import { useNotification } from '@/composables/Notification'
 import { authStore } from '@/stores/authStore'
 import {
 	IDataTableListResponse,
-	IDepartment
+	IDepartment,
+	IDepartmentRecordResponse
 } from '@/modules/departments/types/types'
 
 const mySelfStore = authStore()
@@ -24,8 +25,8 @@ export function dataTable(perPage: number): Promise<IDataTableListResponse> {
 				Authorization: `Bearer ${getSelfToken}`
 			}
 		})
-			.then((response: IDataTableListResponse) => {
-				resolve(response)
+			.then((response: unknown) => {
+				resolve(response as IDataTableListResponse)
 			})
 			.catch(error => {
 				showSnackbar('An error occurred', 'error')
@@ -67,7 +68,9 @@ export function upsertDepartment(
  * Get a  record in the backend
  * @param id
  */
-export function getDepartment(id: string | null): Promise<IDepartment> {
+export function getDepartment(
+	id: string | null
+): Promise<IDepartmentRecordResponse> {
 	const url = `/api/department/single/${id}`
 
 	return AxiosInstance.get(url, {
@@ -77,9 +80,16 @@ export function getDepartment(id: string | null): Promise<IDepartment> {
 	})
 }
 
-export enum Actions {
-	View = 'View',
-	Delete = 'Delete',
-	Add = 'Add',
-	Edit = 'Edit'
+/**
+ * Delete a  record in the backend
+ * @param id
+ */
+export function deleteDepartment(id: string) {
+	const url = `/api/department/${id}/`
+
+	return AxiosInstance.delete(url, {
+		headers: {
+			Authorization: `Bearer ${getSelfToken}`
+		}
+	})
 }

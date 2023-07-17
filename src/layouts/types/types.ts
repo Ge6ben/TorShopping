@@ -9,7 +9,7 @@ export const layoutTypeToComponentMapper: Record<string, string> = {
 }
 
 export interface INavigationList {
-	id: Id
+	id: number
 	title: string
 	icon: string
 	path: string

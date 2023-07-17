@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import permissions from '@/permissions/permissions.json'
-import { INavigationList } from '@/types/coreType'
 import { hasPermission } from '@/composables/hasPermission'
+import { INavigationList } from '@/layouts/types/types'
 
 export const NavigationStore = defineStore('navigation', () => {
 	const navigationItems = ref<INavigationList[]>([
@@ -24,7 +24,7 @@ export const NavigationStore = defineStore('navigation', () => {
 	])
 
 	function getNavigationList() {
-		const permittedMenu = []
+		const permittedMenu: INavigationList[] = []
 
 		filterMenu(navigationItems.value, permittedMenu)
 		navigationItems.value = permittedMenu
@@ -49,6 +49,7 @@ function checkPermission(menuItem: INavigationList): boolean {
 		!menuItem.codename ||
 		hasPermission(
 			Array.isArray(menuItem.codename) ? menuItem.codename : [menuItem.codename]
-		)
+		) ||
+		false
 	)
 }

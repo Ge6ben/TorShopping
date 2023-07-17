@@ -4,7 +4,9 @@
 			<Notification />
 
 			<router-view v-slot="{ Component, route }">
-				<component :is="layoutTypeToComponentMapper[route.meta.layout]">
+				<component
+					:is="layoutTypeToComponentMapper[route.meta.layout as string]"
+				>
 					<component :is="Component" :key="route.path" />
 				</component>
 			</router-view>
