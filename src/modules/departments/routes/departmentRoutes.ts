@@ -22,7 +22,7 @@ export const departmentRoutes: Route[] = [
 				/* webpackChunkName: "DepartmentsRecordsChunk" */ '@/modules/departments/views/ViewAndUpsertRecord.vue'
 			),
 		meta: {
-			layout: Layout.ADMIN,
+			layout: Layout.BLANK,
 			title: 'Department Record'
 		}
 	}

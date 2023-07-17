@@ -22,7 +22,7 @@ AxiosInstance.interceptors.response.use(
 		if (
 			error.response &&
 			error.response.status === 401 &&
-			currentRouteFullPath !== '/login'
+			currentRouteFullPath.value !== '/login'
 		) {
 			router.push('/login').finally()
 		}

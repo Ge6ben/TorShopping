@@ -11,7 +11,8 @@ import { NavigationStore } from '@/stores/navigationStore'
 import { storeToRefs } from 'pinia'
 
 const mySelfStore = authStore()
-const { getSelf, getSelfToken } = mySelfStore
+const { getSelf, getSelfToken } = storeToRefs(mySelfStore)
+const { resetSelf } = mySelfStore
 
 const { show: showSnackbar } = useNotification()
 
@@ -36,17 +37,19 @@ function handleLogout() {
 		{},
 		{
 			headers: {
-				Authorization: `Bearer ${getSelfToken}`
+				Authorization: `Bearer ${getSelfToken.value}`
 			}
 		}
 	)
 		.then(() => {
+			resetSelf()
+			localStorage.setItem('me', '')
 			showSnackbar('Logout successfully')
 			router.push('/login')
 		})
 		.catch(err => {
 			// TODO: Show backend error msg
-			showSnackbar(err.response.message, 'error')
+			showSnackbar('An error occurred', 'error')
 		})
 
 		.finally(() => {
