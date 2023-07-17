@@ -6,9 +6,10 @@ import {
 	IDepartment,
 	IDepartmentRecordResponse
 } from '@/modules/departments/types/types'
+import { storeToRefs } from 'pinia'
 
 const mySelfStore = authStore()
-const { getSelfToken } = mySelfStore
+const { getSelfToken } = storeToRefs(mySelfStore)
 
 /**
  * Data table method that gets data list with pagination that is suitable for
@@ -22,7 +23,7 @@ export function dataTable(perPage: number): Promise<IDataTableListResponse> {
 		AxiosInstance.get('/api/department/list', {
 			params: { perPage },
 			headers: {
-				Authorization: `Bearer ${getSelfToken}`
+				Authorization: `Bearer ${getSelfToken.value}`
 			}
 		})
 			.then((response: unknown) => {
@@ -52,13 +53,13 @@ export function upsertDepartment(
 	if (!id) {
 		return AxiosInstance.post(url, formData, {
 			headers: {
-				Authorization: `Bearer ${getSelfToken}`
+				Authorization: `Bearer ${getSelfToken.value}`
 			}
 		})
 	} else {
 		return AxiosInstance.put(url, data, {
 			headers: {
-				Authorization: `Bearer ${getSelfToken}`
+				Authorization: `Bearer ${getSelfToken.value}`
 			}
 		})
 	}
@@ -75,7 +76,7 @@ export function getDepartment(
 
 	return AxiosInstance.get(url, {
 		headers: {
-			Authorization: `Bearer ${getSelfToken}`
+			Authorization: `Bearer ${getSelfToken.value}`
 		}
 	})
 }
@@ -89,7 +90,7 @@ export function deleteDepartment(id: string) {
 
 	return AxiosInstance.delete(url, {
 		headers: {
-			Authorization: `Bearer ${getSelfToken}`
+			Authorization: `Bearer ${getSelfToken.value}`
 		}
 	})
 }

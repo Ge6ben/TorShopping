@@ -92,6 +92,9 @@ const onSubmit = handleSubmit(values => {
 	login('api/auth/login', values)
 		.then((res: ILoginResponse) => {
 			updateSelf(res)
+			// FIXME: temporary we use locale storage for the informations that we need to have after refresh in any other pages Backends should proved refresh endpoint to avoid using local storage!
+			localStorage.setItem('me', JSON.stringify(res))
+
 			getNavigationList()
 			router.push('/')
 		})

@@ -13,5 +13,11 @@ export const authStore = defineStore('authStore', () => {
 		getAllowedRoles.value = newSelf.user.permissions
 	}
 
-	return { getSelf, updateSelf, getSelfToken, getAllowedRoles }
+	function resetSelf() {
+		getSelf.value = undefined
+		getSelfToken.value = undefined
+		getAllowedRoles.value = undefined
+	}
+
+	return { getSelf, updateSelf, getSelfToken, getAllowedRoles, resetSelf }
 })
