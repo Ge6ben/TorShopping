@@ -36,7 +36,7 @@ const schema = yup.object({
 	code: yup.string().required(),
 	description: yup.string().required()
 })
-const getData = computed(() => data.value)
+const getData = computed((): IDepartment | undefined => data.value)
 
 const { handleSubmit } = useForm<IDepartment>({
 	validationSchema: schema,
@@ -68,7 +68,7 @@ const isInEditMode = computed(
 )
 
 onMounted(() => {
-	if (isInEditMode.value) {
+	if (isInEditMode.value || isInViewMode.value) {
 		fieldsLoading.value = true
 		getDepartment(getId.value)
 			.then((res: { data: IDepartment }) => {
@@ -87,6 +87,13 @@ const codeField = useField('code')
 const descriptionField = useField('description')
 const loading = ref(false)
 const fieldsLoading = ref(false)
+
+const getUsers = computed(
+	() => getData.value?.users.map(i => i.fullname).join(' ,')
+)
+const getProjects = computed(
+	() => getData.value?.projects.map(i => i.title).join(' ,')
+)
 </script>
 <template>
 	<v-container>
@@ -106,6 +113,7 @@ const fieldsLoading = ref(false)
 								v-model="nameField.value.value"
 								:error-messages="nameField.errorMessage.value"
 								:loading="fieldsLoading"
+								:readonly="isInViewMode"
 								class="mb-2"
 								density="compact"
 								label="Name *"
@@ -118,9 +126,32 @@ const fieldsLoading = ref(false)
 								v-model="codeField.value.value"
 								:error-messages="codeField.errorMessage.value"
 								:loading="fieldsLoading"
+								:readonly="isInViewMode"
 								density="compact"
 								label="Code"
 								name="code"
+								variant="outlined"
+							/>
+						</v-col>
+						<!--    Users Field   -->
+						<v-col v-if="isInViewMode">
+							<v-text-field
+								v-model="getUsers"
+								:loading="fieldsLoading"
+								density="compact"
+								label="Users Names"
+								readonly
+								variant="outlined"
+							/>
+						</v-col>
+						<!--    Projects Field   -->
+						<v-col v-if="isInViewMode">
+							<v-text-field
+								v-model="getProjects"
+								:loading="fieldsLoading"
+								density="compact"
+								label="Project titles"
+								readonly
 								variant="outlined"
 							/>
 						</v-col>
@@ -130,6 +161,7 @@ const fieldsLoading = ref(false)
 								v-model="descriptionField.value.value"
 								:error-messages="descriptionField.errorMessage.value"
 								:loading="fieldsLoading"
+								:readonly="isInViewMode"
 								auto-grow
 								density="compact"
 								label="Description"
