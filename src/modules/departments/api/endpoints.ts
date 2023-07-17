@@ -24,7 +24,7 @@ export function dataTable(perPage: number): Promise<IDataTableListResponse> {
 				Authorization: `Bearer ${getSelfToken}`
 			}
 		})
-			.then(response => {
+			.then((response: IDataTableListResponse) => {
 				resolve(response)
 			})
 			.catch(error => {
@@ -37,17 +37,49 @@ export function dataTable(perPage: number): Promise<IDataTableListResponse> {
 /**
  * Create a new record in the backend via post method
  * @param data Post body data.
+ * @param id
  */
-export function createDepartment(data = {}): Promise<IDepartment> {
-	const url = '/api/department'
+export function upsertDepartment(
+	data: IDepartment = {} as IDepartment,
+	id?: string | null
+): Promise<IDepartment> {
+	const url = id ? `/api/department/update/${id}` : '/api/department'
 	const formData = new FormData()
 	Object.entries(data).forEach(([key, value]) => {
 		formData.append(key, value as string)
 	})
+	if (!id) {
+		return AxiosInstance.post(url, formData, {
+			headers: {
+				Authorization: `Bearer ${getSelfToken}`
+			}
+		})
+	} else {
+		return AxiosInstance.put(url, data, {
+			headers: {
+				Authorization: `Bearer ${getSelfToken}`
+			}
+		})
+	}
+}
 
-	return AxiosInstance.post(url, formData, {
+/**
+ * Get a  record in the backend
+ * @param id
+ */
+export function getDepartment(id: string | null): Promise<IDepartment> {
+	const url = `/api/department/single/${id}`
+
+	return AxiosInstance.get(url, {
 		headers: {
 			Authorization: `Bearer ${getSelfToken}`
 		}
 	})
+}
+
+export enum Actions {
+	View = 'View',
+	Delete = 'Delete',
+	Add = 'Add',
+	Edit = 'Edit'
 }

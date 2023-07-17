@@ -47,6 +47,17 @@ export interface IDepartment {
 	users_count: number
 	creator: string
 	updater: string
+	projects: {
+		id: number
+		title: string
+		description: string
+	}[]
+	users: {
+		id: number
+		fullname: string
+		email: string
+		phone: string
+	}[]
 }
 
 export interface IDataTableLink {

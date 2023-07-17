@@ -7,7 +7,7 @@ import {
 	IDepartment,
 	itemsPerPageOptionsTypes
 } from '@/modules/departments/types/types'
-import { dataTable } from '@/modules/departments/api/endpoints'
+import { Actions, dataTable } from '@/modules/departments/api/endpoints'
 import BaseButton from '@/components/BaseButton.vue'
 import router from '@/router'
 
@@ -15,32 +15,40 @@ const tableItemPerPage: Ref<number> = ref(3)
 const headers: DataTableHeaderOpt<IDepartment> = [
 	{
 		title: 'Name',
-		key: 'name'
+		key: 'name',
+		sortable: false
 	},
 	{
 		title: 'Code',
-		key: 'code'
+		key: 'code',
+		sortable: false
 	},
 	{
 		title: 'Description',
-		key: 'description'
+		key: 'description',
+		sortable: false
 	},
 	{
 		title: 'Projects count',
-		key: 'projects_count'
+		key: 'projects_count',
+		sortable: false
 	},
 	{
 		title: 'Users count',
-		key: 'users_count'
+		key: 'users_count',
+		sortable: false
 	},
 	{
 		title: 'Creator',
-		key: 'creator'
+		key: 'creator',
+		sortable: false
 	},
 	{
 		title: 'Updater',
-		key: 'updater'
-	}
+		key: 'updater',
+		sortable: false
+	},
+	{ title: 'Actions', key: 'actions', sortable: false }
 ]
 
 const data = ref<IDataTableListResponse>()
@@ -72,11 +80,12 @@ function fetchData(event: AnyObject) {
 		.finally(() => (loading.value = false))
 }
 
-function handleActions() {
+function handleActions(action: Actions, id?: number) {
 	router.push({
 		name: 'department-record',
 		params: {
-			action: 'add'
+			action: action,
+			id: id
 		}
 	})
 }
@@ -85,7 +94,7 @@ function handleActions() {
 	<v-container>
 		<v-row no-gutters>
 			<v-col class="my-8 text-end" cols="12">
-				<BaseButton @click="handleActions">Add</BaseButton>
+				<BaseButton @click="handleActions(Actions.Add)">Add</BaseButton>
 			</v-col>
 			<v-col>
 				<v-data-table-server
@@ -119,6 +128,29 @@ function handleActions() {
 							</v-col>
 						</v-row>
 					</template>
+
+					<template v-slot:[`item.actions`]="{ item }">
+						<v-icon
+							class="me-2"
+							size="small"
+							@click="handleActions(Actions.View, item.raw.id)"
+						>
+							mdi-account-eye
+						</v-icon>
+						<v-icon
+							size="small"
+							@click="handleActions(Actions.Edit, item.raw.id)"
+						>
+							mdi-pencil
+						</v-icon>
+						<v-icon
+							size="small"
+							@click="handleActions(Actions.Delete, item.raw.id)"
+						>
+							mdi-delete
+						</v-icon>
+					</template>
+					<!--          TODO: Add reset button-->
 				</v-data-table-server>
 				<!--          FixME:handle text-wrap , fixed header and  fixed actions-->
 			</v-col>

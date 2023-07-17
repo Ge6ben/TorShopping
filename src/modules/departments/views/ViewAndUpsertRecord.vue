@@ -1,15 +1,24 @@
 <script lang="ts" setup>
 import { useField, useForm } from 'vee-validate'
-import { ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import * as yup from 'yup'
 import BaseButton from '@/components/BaseButton.vue'
-import { createDepartment } from '@/modules/departments/api/endpoints'
+import {
+	Actions,
+	getDepartment,
+	upsertDepartment
+} from '@/modules/departments/api/endpoints'
 import router from '@/router'
 import { useNotification } from '@/composables/Notification'
-import { IBreadcrumb } from '@/modules/departments/types/types'
+import { IBreadcrumb, IDepartment } from '@/modules/departments/types/types'
 
 const { show: showSnackbar } = useNotification()
+const data = ref<IDepartment>()
 
+const getTitle = computed(() => {
+	return router.currentRoute.value.params.action
+})
+// TODO: Get breadcrumb from routes
 const items: IBreadcrumb[] = [
 	{
 		title: 'Departments',
@@ -17,7 +26,7 @@ const items: IBreadcrumb[] = [
 		to: '/departments'
 	},
 	{
-		title: 'Add department',
+		title: `${getTitle.value} department`,
 		disabled: true,
 		to: ''
 	}
@@ -27,13 +36,21 @@ const schema = yup.object({
 	code: yup.string().required(),
 	description: yup.string().required()
 })
-const { handleSubmit } = useForm({
-	validationSchema: schema
+const getData = computed(() => data.value)
+
+const { handleSubmit } = useForm<IDepartment>({
+	validationSchema: schema,
+	initialValues: getData
 })
+const getId = computed((): string | null =>
+	router.currentRoute.value.params.action === Actions.Add
+		? null
+		: (router.currentRoute.value.params?.id as string)
+)
 const onSubmit = handleSubmit(values => {
 	loading.value = true
 
-	createDepartment(values)
+	upsertDepartment(values, getId.value)
 		.then(() => {
 			router.push('/departments')
 		})
@@ -46,17 +63,36 @@ const onSubmit = handleSubmit(values => {
 			loading.value = false
 		})
 })
+const isInEditMode = computed(
+	() => router.currentRoute.value.params.action == Actions.Edit
+)
 
+onMounted(() => {
+	if (isInEditMode.value) {
+		fieldsLoading.value = true
+		getDepartment(getId.value)
+			.then((res: { data: IDepartment }) => {
+				data.value = res.data
+			})
+			.finally(() => {
+				fieldsLoading.value = false
+			})
+	}
+})
+const isInViewMode = computed(
+	() => router.currentRoute.value.params.action === Actions.View
+)
 const nameField = useField('name')
 const codeField = useField('code')
 const descriptionField = useField('description')
 const loading = ref(false)
+const fieldsLoading = ref(false)
 </script>
 <template>
 	<v-container>
 		<v-row>
 			<v-col>
-				<h2>Add Department</h2>
+				<h2>{{ getTitle }} Department</h2>
 			</v-col>
 			<v-col cols="12">
 				<v-breadcrumbs :items="items" class="pa-0" divider=" > " />
@@ -69,6 +105,7 @@ const loading = ref(false)
 							<v-text-field
 								v-model="nameField.value.value"
 								:error-messages="nameField.errorMessage.value"
+								:loading="fieldsLoading"
 								class="mb-2"
 								density="compact"
 								label="Name *"
@@ -80,8 +117,10 @@ const loading = ref(false)
 							<v-text-field
 								v-model="codeField.value.value"
 								:error-messages="codeField.errorMessage.value"
+								:loading="fieldsLoading"
 								density="compact"
 								label="Code"
+								name="code"
 								variant="outlined"
 							/>
 						</v-col>
@@ -90,6 +129,7 @@ const loading = ref(false)
 							<v-textarea
 								v-model="descriptionField.value.value"
 								:error-messages="descriptionField.errorMessage.value"
+								:loading="fieldsLoading"
 								auto-grow
 								density="compact"
 								label="Description"
@@ -106,6 +146,7 @@ const loading = ref(false)
 							<div>
 								<v-spacer />
 								<BaseButton
+									v-if="!isInViewMode"
 									:loading="loading"
 									block
 									class="my-6"
@@ -113,7 +154,7 @@ const loading = ref(false)
 									size="large"
 									type="submit"
 									variant="tonal"
-									>Add
+									>Submit
 								</BaseButton>
 								<!-- TODO:Add cancel or reset button -->
 							</div>
