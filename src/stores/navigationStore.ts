@@ -11,7 +11,7 @@ export const NavigationStore = defineStore('navigation', () => {
 			title: 'Departments',
 			icon: 'mdi-family-tree',
 			path: '/departments',
-			codename: permissions.DEPARTMENT_VIEW
+			codename: permissions.DEPARTMENT_LIST
 		},
 		// TODO: Just for showing we put here
 		{
@@ -19,7 +19,7 @@ export const NavigationStore = defineStore('navigation', () => {
 			title: 'Landing Page',
 			icon: 'mdi-monitor',
 			path: '/landing-page',
-			codename: permissions.DEPARTMENT_VIEW
+			codename: permissions.DEPARTMENT_LIST
 		}
 	])
 

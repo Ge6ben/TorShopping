@@ -15,6 +15,8 @@ import BaseButton from '@/components/BaseButton.vue'
 import router from '@/router'
 import BaseDialog from '@/components/BaseDialog.vue'
 import { useNotification } from '@/composables/Notification'
+import permissions from '@/permissions/permissions.json'
+import { hasPermission } from '@/composables/hasPermission'
 
 const tableItemPerPage: Ref<number> = ref(3)
 const headers: {
@@ -123,14 +125,24 @@ function openDeleteDialog(id: number) {
 	selectedIdToDelete.value = id
 	canOpenDialog.value = true
 }
+
+function hasPermissionToSeeBtn(permCode: string) {
+	return hasPermission([permCode])
+}
 </script>
 <template>
 	<v-container>
 		<v-row no-gutters>
-			<v-col class="my-8 text-end" cols="12">
+			<v-col class="align-center">
+				<h1>Departments</h1>
+			</v-col>
+			<v-col
+				v-if="hasPermissionToSeeBtn(permissions.DEPARTMENT_CREATE)"
+				class="text-end"
+			>
 				<BaseButton @click="handleActions(Actions.Add)">Add</BaseButton>
 			</v-col>
-			<v-col>
+			<v-col class="mt-8" cols="12">
 				<v-data-table-server
 					v-model:items-per-page="tableItemPerPage"
 					:headers="headers as any"
@@ -165,6 +177,7 @@ function openDeleteDialog(id: number) {
 
 					<template v-slot:[`item.actions`]="{ item }">
 						<v-icon
+							v-if="hasPermissionToSeeBtn(permissions.DEPARTMENT_VIEW)"
 							class="me-2"
 							size="small"
 							@click="handleActions(Actions.View, item.raw.id)"
@@ -172,12 +185,17 @@ function openDeleteDialog(id: number) {
 							mdi-account-eye
 						</v-icon>
 						<v-icon
+							v-if="hasPermissionToSeeBtn(permissions.DEPARTMENT_EDIT)"
 							size="small"
 							@click="handleActions(Actions.Edit, item.raw.id)"
 						>
 							mdi-pencil
 						</v-icon>
-						<v-icon size="small" @click="openDeleteDialog(item.raw.id)">
+						<v-icon
+							v-if="hasPermissionToSeeBtn(permissions.DEPARTMENT_DELETE)"
+							size="small"
+							@click="openDeleteDialog(item.raw.id)"
+						>
 							mdi-delete
 						</v-icon>
 					</template>
