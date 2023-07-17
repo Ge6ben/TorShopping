@@ -2,17 +2,26 @@
 import { Ref, ref } from 'vue'
 import { AnyObject } from 'yup'
 import {
-	DataTableHeaderOpt,
+	Actions,
 	IDataTableListResponse,
 	IDepartment,
 	itemsPerPageOptionsTypes
 } from '@/modules/departments/types/types'
-import { Actions, dataTable } from '@/modules/departments/api/endpoints'
+import {
+	dataTable,
+	deleteDepartment
+} from '@/modules/departments/api/endpoints'
 import BaseButton from '@/components/BaseButton.vue'
 import router from '@/router'
+import BaseDialog from '@/components/BaseDialog.vue'
+import { useNotification } from '@/composables/Notification'
 
 const tableItemPerPage: Ref<number> = ref(3)
-const headers: DataTableHeaderOpt<IDepartment> = [
+const headers: {
+	key: keyof IDepartment
+	title: string
+	sortable: boolean
+}[] = [
 	{
 		title: 'Name',
 		key: 'name',
@@ -23,11 +32,11 @@ const headers: DataTableHeaderOpt<IDepartment> = [
 		key: 'code',
 		sortable: false
 	},
-	{
-		title: 'Description',
-		key: 'description',
-		sortable: false
-	},
+	// {
+	// 	title: 'Description',
+	// 	key: 'description',
+	// 	sortable: false
+	// },
 	{
 		title: 'Projects count',
 		key: 'projects_count',
@@ -50,12 +59,13 @@ const headers: DataTableHeaderOpt<IDepartment> = [
 	},
 	{ title: 'Actions', key: 'actions', sortable: false }
 ]
-
-const data = ref<IDataTableListResponse>()
-
+const { show: showSnackbar } = useNotification()
+const data = ref<IDepartment>()
+const deleteLoading = ref(false)
+const selectedIdToDelete = ref()
 const loading = ref(false)
 const tableCount = ref(0)
-
+const canOpenDialog = ref(false)
 const itemsPerPageOptions: itemsPerPageOptionsTypes[] = [
 	{ value: 1, title: '1' },
 	{ value: 3, title: '3' },
@@ -77,6 +87,10 @@ function fetchData(event: AnyObject) {
 			data.value = res.data
 			tableCount.value = res.meta.total
 		})
+		.catch(() => {
+			// TODO: Show backend error msg
+			showSnackbar('An error occurred', 'error')
+		})
 		.finally(() => (loading.value = false))
 }
 
@@ -89,6 +103,26 @@ function handleActions(action: Actions, id?: number) {
 		}
 	})
 }
+
+function handleDeleteRecord() {
+	deleteLoading.value = true
+	deleteDepartment(selectedIdToDelete.value)
+		.then(() => {
+			canOpenDialog.value = false
+			selectedIdToDelete.value = null
+			fetchData({ itemsPerPage: tableItemPerPage.value })
+		})
+		.catch(() => {
+			// TODO: Show backend error msg
+			showSnackbar('An error occurred', 'error')
+		})
+		.finally(() => (deleteLoading.value = false))
+}
+
+function openDeleteDialog(id: number) {
+	selectedIdToDelete.value = id
+	canOpenDialog.value = true
+}
 </script>
 <template>
 	<v-container>
@@ -99,8 +133,8 @@ function handleActions(action: Actions, id?: number) {
 			<v-col>
 				<v-data-table-server
 					v-model:items-per-page="tableItemPerPage"
-					:headers="headers"
-					:items="data"
+					:headers="headers as any"
+					:items="data as any"
 					:items-length="tableCount"
 					:items-per-page-options="itemsPerPageOptions ?? []"
 					:loading="loading"
@@ -111,7 +145,9 @@ function handleActions(action: Actions, id?: number) {
 				>
 					<template v-slot:bottom>
 						<v-row>
-							<v-col cols="10"></v-col>
+							<v-col cols="10">
+								<span class="px-4 text-caption">Total: {{ tableCount }}</span>
+							</v-col>
 							<v-col class="pb-0 mt-4" cols="2">
 								<v-autocomplete
 									:items="itemsPerPageOptions"
@@ -121,7 +157,6 @@ function handleActions(action: Actions, id?: number) {
 									item-title="title"
 									item-value="value"
 									label="Items per page"
-									variant="solo"
 									@update:model-value="fetchData({ itemsPerPage: $event })"
 								/>
 								<!-- TODO:Show total number-->
@@ -143,10 +178,7 @@ function handleActions(action: Actions, id?: number) {
 						>
 							mdi-pencil
 						</v-icon>
-						<v-icon
-							size="small"
-							@click="handleActions(Actions.Delete, item.raw.id)"
-						>
+						<v-icon size="small" @click="openDeleteDialog(item.raw.id)">
 							mdi-delete
 						</v-icon>
 					</template>
@@ -155,5 +187,13 @@ function handleActions(action: Actions, id?: number) {
 				<!--          FixME:handle text-wrap , fixed header and  fixed actions-->
 			</v-col>
 		</v-row>
+
+		<BaseDialog
+			v-model="canOpenDialog"
+			:ok-button-props="{ loading: deleteLoading }"
+			content="Deleting the record will remove it from the system permanently, Are you sure you want to delete it?"
+			title="Delete Record"
+			@submit="handleDeleteRecord"
+		></BaseDialog>
 	</v-container>
 </template>
