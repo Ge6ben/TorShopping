@@ -70,9 +70,11 @@ const tableCount = ref(0)
 const canOpenDialog = ref(false)
 const itemsPerPageOptions: itemsPerPageOptionsTypes[] = [
 	{ value: 1, title: '1' },
-	{ value: 3, title: '3' },
-	{ value: 7, title: '7' },
-	{ value: 9, title: '9' }
+	{ value: 2, title: '2' },
+	{ value: 4, title: '4' },
+	{ value: 8, title: '8' },
+	{ value: 16, title: '16' },
+	{ value: 32, title: '32' }
 	//   TODO:Handle option that request for all items
 ]
 
@@ -157,7 +159,7 @@ function hasPermissionToSeeBtn(permCode: string) {
 				>
 					<template v-slot:bottom>
 						<v-row>
-							<v-col cols="10">
+							<v-col class="d-flex align-center pb-0" cols="10">
 								<span class="px-4 text-caption">Total: {{ tableCount }}</span>
 							</v-col>
 							<v-col class="pb-0 mt-4" cols="2">
