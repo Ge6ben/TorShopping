@@ -1,5 +1,11 @@
 <template>
-	<h1 class="pa-16">Landing Page</h1>
+	<div class="text-center">
+		<h1 class="pa-16">Landing Page ...</h1>
+		<BaseButton class="pa-16" variant="text" @click="goBack">
+			Go BACK
+		</BaseButton>
+	</div>
+
 	<!--	<div class="landingPage">-->
 	<!--		&lt;!&ndash;    Nav bar&ndash;&gt;-->
 	<!--		<v-row class="ml-16 mt-12 mr-4 pl-5 mb-12" no-gutters>-->
@@ -114,6 +120,8 @@
 
 <script lang="ts" setup>
 import { INavItems } from '@/modules/landingPage/types/types'
+import BaseButton from '@/components/BaseButton.vue'
+import router from '@/router'
 
 const girlsCard = ['Hoodies & Sweetshirt', 'Coats & Parkas', 'Tees & T-Shirt']
 const navItems: INavItems[] = [
@@ -141,6 +149,10 @@ function handleSignUp() {
 
 function handleSelectNav(item: INavItems) {
 	console.log(item)
+}
+
+function goBack() {
+	router.back()
 }
 
 function handleExplore(item: string) {
