@@ -28,7 +28,11 @@ export default createVuetify({
 			light: {
 				colors: {
 					primary: '#EBD96B',
-					secondary: '#5CBBF6'
+					secondary: '#5CBBF6',
+					navColor: '#242323',
+					navBtnTextColor: '#FEFEFE',
+					newArrivalTitle: '#191919',
+					newArrivalSubTitle: '#7F7F7F'
 				}
 			}
 		}
